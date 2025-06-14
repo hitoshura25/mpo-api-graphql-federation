@@ -1,4 +1,14 @@
 """
+Schema for podcast RSS feeds supporting iTunes, Google Play, Dublin Core,
+Media RSS, and Atom extensions
+"""
+
+"""
+A date-time string in RFC 2822 format
+"""
+scalar DateTime
+
+"""
 Represents the iTunes owner information.
 """
 type iTunesOwner {
@@ -32,13 +42,67 @@ type Enclosure {
 }
 
 """
+Represents a media thumbnail.
+"""
+type MediaThumbnail {
+  url: String
+  width: Int
+  height: Int
+}
+
+"""
+Represents a media restriction.
+"""
+type MediaRestriction {
+  type: String
+  relationship: String
+  countries: String
+}
+
+
+"""
+Represents the GUID (Global Unique Identifier) of an item
+"""
+type GuidType {
+  value: String!
+  isPermaLink: Boolean
+}
+
+
+"""
+Represents an Atom link element
+"""
+type AtomLink {
+  href: String
+  rel: String
+  title: String
+  type: String
+}
+
+"""
+Represents a podcast funding element.
+"""
+type PodcastFunding {
+  url: String
+  text: String
+}
+
+"""
+Represents the source of an RSS item
+"""
+type RSSSource {
+  url: String!
+  title: String
+}
+
+"""
 Represents a podcast episode.
 """
 type Item {
-  guid: String
-  title: String
+  guid: GuidType!
+  title: String!
   description: String
-  pubDate: String
+  pubDate: DateTime
   author: String
   link: String
   content_encoded: String
@@ -46,28 +110,37 @@ type Item {
   itunes_title: String
   itunes_author: String
   itunes_image: String
+  media_thumbnail: MediaThumbnail
   itunes_duration: String
   itunes_summary: String
   itunes_subtitle: String
   itunes_keywords: String
   itunes_explicit: String
   itunes_episodeType: String
+  itunes_episode: Int
+  itunes_block: String 
+  dc_creator: String        
+  googleplay_block: String  
+  googleplay_image: String 
+  comments: String 
+  source: RSSSource
+  category: [String]
 }
 
 """
 Represents the RSS channel.
 """
 type Channel {
-  atom_link: String
+  atom_link: [AtomLink]
   generator: String
-  title: String
-  description: String
+  title: String!
+  description: String!
   copyright: String
   language: String
-  pubDate: String
-  lastBuildDate: String
+  pubDate: DateTime
+  lastBuildDate: DateTime
   image: Image
-  link: String
+  link: String!
   itunes_type: String
   itunes_summary: String
   itunes_author: String
@@ -76,7 +149,21 @@ type Channel {
   itunes_new_feed_url: String
   itunes_owner: iTunesOwner
   itunes_category: [Category]
+  media_thumbnail: MediaThumbnail
+  media_restriction: MediaRestriction
+  podcast_funding: PodcastFunding
   item: [Item]
+  itunes_subtitle: String
+  content_encoded: String
+  sy_updatePeriod: String   
+  sy_updateFrequency: Int 
+  googleplay_image: String
+  itunes_block: String 
+  skipHours: [Int]     
+  skipDays: [String] 
+  docs: String 
+  googleplay_explicit: String @deprecated(reason: "Use itunes_explicit instead")
+  googleplay_block: String @deprecated(reason: "Use itunes_block instead")
 }
 
 """
