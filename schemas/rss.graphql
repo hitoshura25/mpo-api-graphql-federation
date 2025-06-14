@@ -1,9 +1,4 @@
 """
-Schema for podcast RSS feeds supporting iTunes, Google Play, Dublin Core,
-Media RSS, and Atom extensions
-"""
-
-"""
 A date-time string in RFC 2822 format
 """
 scalar DateTime

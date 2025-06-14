@@ -1,7 +1,7 @@
 """
 A podcast episode with metadata
 """
-type Episode {
+type MpoEpisode {
   name: String!
   description: String
   published: DateTime
@@ -14,7 +14,7 @@ type Episode {
 """
 Metadata for pagination
 """
-type PaginationMetadata {
+type MpoPaginationMetadata {
   total: Int!
   limit: Int!
   offset: Int!
@@ -25,18 +25,18 @@ type PaginationMetadata {
 """
 Response containing episodes and pagination info
 """
-type EpisodeResponse {
+type MpoEpisodeResponse {
   name: String!
   description: String
   imageUrl: String
-  episodes: [Episode!]!
-  pagination: PaginationMetadata!
+  episodes: [MpoEpisode!]!
+  pagination: MpoPaginationMetadata!
 }
 
 """
 A podcast with metadata
 """
-type Podcast {
+type MpoPodcast {
   name: String
   artworkUrl: String
   smallArtworkUrl: String
@@ -48,15 +48,15 @@ type Podcast {
 """
 Response containing search results
 """
-type PodcastResponse {
+type MpoPodcastResponse {
   resultCount: Int!
-  results: [Podcast!]!
+  results: [MpoPodcast!]!
 }
 
 """
 Validation error details
 """
-type ValidationError {
+type MpoValidationError {
   loc: [String!]!
   msg: String!
   type: String!
@@ -65,38 +65,38 @@ type ValidationError {
 """
 HTTP validation error response
 """
-type HTTPValidationError {
-  detail: [ValidationError!]
+type MpoHTTPValidationError {
+  detail: [MpoValidationError!]
 }
 
 """
 A date-time string in ISO 8601 format
 """
-scalar DateTime
+scalar MpoDateTime
 
 type Query {
   """
   Search for podcasts
   """
-  searchPodcasts(
+  mpoSearchPodcasts(
     """Search term for podcasts"""
     term: String!
-  ): PodcastResponse!
+  ): MpoPodcastResponse!
 
   """
   Get details for a specific podcast
   """
-  getPodcastDetails(
+  mpoGetPodcastDetails(
     """RSS feed URL of the podcast"""
     feedUrl: String!
     """Maximum number of episodes to return"""
     episodeLimit: Int = 10
     """Offset position for episodes to return"""
     episodeOffset: Int = 0
-  ): EpisodeResponse!
+  ): MpoEpisodeResponse!
 
   """
   Health check endpoint
   """
-  health: Boolean!
+  mpoHealth: Boolean!
 }

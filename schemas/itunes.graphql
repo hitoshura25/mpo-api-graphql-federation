@@ -1,9 +1,7 @@
-// schema.graphql
-
 """
 Represents a podcast in the iTunes store
 """
-type Podcast {
+type iTunesPodcast {
   wrapperType: String
   kind: String
   artistId: Int
@@ -41,9 +39,9 @@ type Podcast {
 """
 Response from iTunes search API
 """
-type SearchResponse {
+type iTunesSearchResponse {
   resultCount: Int
-  results: [Podcast]
+  results: [iTunesPodcast]
 }
 
 type Query {
@@ -53,8 +51,8 @@ type Query {
   - term: Search term to find podcasts
   - entity: Type of media to search for (defaults to "podcast")
   """
-  searchPodcasts(
+  searchiTunesPodcasts(
     term: String!
     entity: String = "podcast"
-  ): SearchResponse
+  ): iTunesSearchResponse
 }
