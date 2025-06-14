@@ -1,0 +1,102 @@
+"""
+A podcast episode with metadata
+"""
+type Episode {
+  name: String!
+  description: String
+  published: DateTime
+  durationInSeconds: String
+  downloadUrl: String
+  type: String
+  artworkUrl: String
+}
+
+"""
+Metadata for pagination
+"""
+type PaginationMetadata {
+  total: Int!
+  limit: Int!
+  offset: Int!
+  nextPage: String
+  previousPage: String
+}
+
+"""
+Response containing episodes and pagination info
+"""
+type EpisodeResponse {
+  name: String!
+  description: String
+  imageUrl: String
+  episodes: [Episode!]!
+  pagination: PaginationMetadata!
+}
+
+"""
+A podcast with metadata
+"""
+type Podcast {
+  name: String
+  artworkUrl: String
+  smallArtworkUrl: String
+  genres: [String]
+  author: String
+  feedUrl: String
+}
+
+"""
+Response containing search results
+"""
+type PodcastResponse {
+  resultCount: Int!
+  results: [Podcast!]!
+}
+
+"""
+Validation error details
+"""
+type ValidationError {
+  loc: [String!]!
+  msg: String!
+  type: String!
+}
+
+"""
+HTTP validation error response
+"""
+type HTTPValidationError {
+  detail: [ValidationError!]
+}
+
+"""
+A date-time string in ISO 8601 format
+"""
+scalar DateTime
+
+type Query {
+  """
+  Search for podcasts
+  """
+  searchPodcasts(
+    """Search term for podcasts"""
+    term: String!
+  ): PodcastResponse!
+
+  """
+  Get details for a specific podcast
+  """
+  getPodcastDetails(
+    """RSS feed URL of the podcast"""
+    feedUrl: String!
+    """Maximum number of episodes to return"""
+    episodeLimit: Int = 10
+    """Offset position for episodes to return"""
+    episodeOffset: Int = 0
+  ): EpisodeResponse!
+
+  """
+  Health check endpoint
+  """
+  health: Boolean!
+}
