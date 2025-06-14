@@ -1,0 +1,94 @@
+"""
+Represents the iTunes owner information.
+"""
+type iTunesOwner {
+  name: String
+  email: String
+}
+
+"""
+Represents an image in the RSS feed.
+"""
+type Image {
+  link: String
+  title: String
+  url: String
+}
+
+"""
+Represents a category in the RSS feed.
+"""
+type Category {
+  text: String
+}
+
+"""
+Represents an enclosure (usually an audio file) in the RSS feed.
+"""
+type Enclosure {
+  url: String
+  length: Int
+  type: String
+}
+
+"""
+Represents a podcast episode.
+"""
+type Item {
+  guid: String
+  title: String
+  description: String
+  pubDate: String
+  author: String
+  link: String
+  content_encoded: String
+  enclosure: Enclosure
+  itunes_title: String
+  itunes_author: String
+  itunes_image: String
+  itunes_duration: String
+  itunes_summary: String
+  itunes_subtitle: String
+  itunes_keywords: String
+  itunes_explicit: String
+  itunes_episodeType: String
+}
+
+"""
+Represents the RSS channel.
+"""
+type Channel {
+  atom_link: String
+  generator: String
+  title: String
+  description: String
+  copyright: String
+  language: String
+  pubDate: String
+  lastBuildDate: String
+  image: Image
+  link: String
+  itunes_type: String
+  itunes_summary: String
+  itunes_author: String
+  itunes_explicit: String
+  itunes_image: String
+  itunes_new_feed_url: String
+  itunes_owner: iTunesOwner
+  itunes_category: [Category]
+  item: [Item]
+}
+
+"""
+Represents the root RSS feed.
+"""
+type RSS {
+  channel: Channel
+}
+
+type Query {
+  """
+  Fetches the RSS feed data.
+  """
+  rss: RSS
+}

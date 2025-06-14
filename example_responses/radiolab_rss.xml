@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:media="http://search.yahoo.com/mrss/" xmlns:podcast="https://podcastindex.org/namespace/1.0">
+  <channel>
+    <atom:link href="https://feeds.simplecast.com/EmVW7VGp" rel="self" title="MP3 Audio" type="application/atom+xml"/>
+    <atom:link href="https://simplecast.superfeedr.com" rel="hub" xmlns="http://www.w3.org/2005/Atom"/>
+    <generator>https://simplecast.com</generator>
+    <title>Radiolab</title>
+    <description>Radiolab is on a curiosity bender. We ask deep questions and use investigative journalism to get the answers. A given episode might whirl you through science, legal history, and into the home of someone halfway across the world. The show is known for innovative sound design, smashing information into music. It is hosted by Lulu Miller and Latif Nasser.</description>
+    <copyright>© WNYC Studios</copyright>
+    <language>en-us</language>
+    <pubDate>Fri, 13 Jun 2025 15:00:00 +0000</pubDate>
+    <lastBuildDate>Fri, 13 Jun 2025 15:00:12 +0000</lastBuildDate>
+    <image>
+      <link>https://www.wnycstudios.org/podcasts/radiolab/projects/podcasts</link>
+      <title>Radiolab</title>
+      <url>https://image.simplecastcdn.com/images/3b6088d3-ed01-4c8f-b0af-bcbd72035bcf/48797471-8a28-49e4-95aa-80a28ffa6d82/3000x3000/radiolab-branded-logo-1400x1400.jpg?aid=rss_feed</url>
+    </image>
+    <link>https://www.wnycstudios.org/podcasts/radiolab/projects/podcasts</link>
+    <itunes:type>episodic</itunes:type>
+    <itunes:summary>Radiolab is on a curiosity bender. We ask deep questions and use investigative journalism to get the answers. A given episode might whirl you through science, legal history, and into the home of someone halfway across the world. The show is known for innovative sound design, smashing information into music. It is hosted by Lulu Miller and Latif Nasser.</itunes:summary>
+    <itunes:author>WNYC Studios</itunes:author>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:image href="https://image.simplecastcdn.com/images/3b6088d3-ed01-4c8f-b0af-bcbd72035bcf/48797471-8a28-49e4-95aa-80a28ffa6d82/3000x3000/radiolab-branded-logo-1400x1400.jpg?aid=rss_feed"/>
+    <itunes:new-feed-url>https://feeds.simplecast.com/EmVW7VGp</itunes:new-feed-url>
+    <itunes:owner>
+      <itunes:name>WNYC Studios</itunes:name>
+      <itunes:email>wnycdigital@gmail.com</itunes:email>
+    </itunes:owner>
+    <itunes:category text="Science">
+      <itunes:category text="Natural Sciences"/>
+    </itunes:category>
+    <itunes:category text="Society &amp; Culture">
+      <itunes:category text="Documentary"/>
+    </itunes:category>
+    <itunes:category text="History"/>
+    <item>
+      <guid isPermaLink="false">13281368-d447-4dc7-9c39-0d20f628a215</guid>
+      <title>Swimming with Shadows: A Radiolab Week of Sharks</title>
+      <description><![CDATA[<p>In the summer of 1975, Jaws scared an entire generation out of the water. The film burned an idea into our cultural memory: they are mindless, man-eating monsters. We set out to tell a different story about sharks. Five stories over five days. We tear down deep-seated myths about sharks, plunge into the water with them, and find sharks that explode our sense of what they are – flying sharks, glowing sharks, baby sharks, sharks under attack, and sharks that may save millions of human lives.</p><p>Look out for brand-new episodes in your podcast feed starting June 16th through June 20th. </p><p>Visit our <a href="https://www.youtube.com/channel/UCaum_fMDGgFQCmKHUBPq_xg">YouTube channel</a> to check out the video trailer for the series and make sure to subscribe for more behind the scenes content throughout the week.  </p><p>For more details about the series, visit <a href="www.radiolab.org/sharks">radiolab.org/sharks </a></p><p>Follow us on Instagram @radiolab</p>
+]]></description>
+      <pubDate>Fri, 13 Jun 2025 15:00:00 +0000</pubDate>
+      <author>wnycdigital@gmail.com (WNYC Studios)</author>
+      <link>https://www.wnycstudios.org/podcasts/radiolab/projects/podcasts</link>
+      <content:encoded><![CDATA[<p>In the summer of 1975, Jaws scared an entire generation out of the water. The film burned an idea into our cultural memory: they are mindless, man-eating monsters. We set out to tell a different story about sharks. Five stories over five days. We tear down deep-seated myths about sharks, plunge into the water with them, and find sharks that explode our sense of what they are – flying sharks, glowing sharks, baby sharks, sharks under attack, and sharks that may save millions of human lives.</p><p>Look out for brand-new episodes in your podcast feed starting June 16th through June 20th. </p><p>Visit our <a href="https://www.youtube.com/channel/UCaum_fMDGgFQCmKHUBPq_xg">YouTube channel</a> to check out the video trailer for the series and make sure to subscribe for more behind the scenes content throughout the week.  </p><p>For more details about the series, visit <a href="www.radiolab.org/sharks">radiolab.org/sharks </a></p><p>Follow us on Instagram @radiolab</p>
+]]></content:encoded>
+      <enclosure length="2289404" type="audio/mpeg" url="https://pscrb.fm/rss/p/mgln.ai/e/14/prfx.byspotify.com/e/dts.podtrac.com/pts/redirect.mp3/waaa.wnyc.org/758af4c0-a2c3-47ec-a2d8-05f41bfbde51/episodes/7486d204-8026-4dae-a9cb-d7472d2c0823/audio/128/default.mp3?aid=rss_feed&amp;awCollectionId=758af4c0-a2c3-47ec-a2d8-05f41bfbde51&amp;awEpisodeId=7486d204-8026-4dae-a9cb-d7472d2c0823&amp;feed=EmVW7VGp"/>
+      <itunes:title>Swimming with Shadows: A Radiolab Week of Sharks</itunes:title>
+      <itunes:author>WNYC Studios</itunes:author>
+      <itunes:image href="https://image.simplecastcdn.com/images/9178a653-4485-47c1-b772-654e4de92766/780887b6-dd57-4a10-a6e2-2c1529571b30/3000x3000/sharkweek-img-3000x3000centered-250528.jpg?aid=rss_feed"/>
+      <itunes:duration>00:02:23</itunes:duration>
+      <itunes:summary>In the summer of 1975, Jaws scared an entire generation out of the water. The film burned an idea into our cultural memory: they are mindless, man-eating monsters. We set out to tell a different story about sharks. Five stories over five days. We tear down deep-seated myths about sharks, plunge into the water with them, and find sharks that explode our sense of what they are – flying sharks, glowing sharks, baby sharks, sharks under attack, and sharks that may save millions of human lives.
+
+Look out for brand-new episodes in your podcast feed starting June 16th through June 20th. 
+
+Visit our YouTube channel to check out the video trailer for the series and make sure to subscribe for more behind the scenes content throughout the week.  
+
+For more details about the series, visit radiolab.org/sharks 
+
+Follow us on Instagram @radiolab</itunes:summary>
+      <itunes:subtitle>In the summer of 1975, Jaws scared an entire generation out of the water. The film burned an idea into our cultural memory: they are mindless, man-eating monsters. We set out to tell a different story about sharks. Five stories over five days. We tear down deep-seated myths about sharks, plunge into the water with them, and find sharks that explode our sense of what they are – flying sharks, glowing sharks, baby sharks, sharks under attack, and sharks that may save millions of human lives.
+
+Look out for brand-new episodes in your podcast feed starting June 16th through June 20th. 
+
+Visit our YouTube channel to check out the video trailer for the series and make sure to subscribe for more behind the scenes content throughout the week.  
+
+For more details about the series, visit radiolab.org/sharks 
+
+Follow us on Instagram @radiolab</itunes:subtitle>
+      <itunes:keywords>sharks, shark week, surfing, storytelling, jaws, great whites</itunes:keywords>
+      <itunes:explicit>false</itunes:explicit>
+      <itunes:episodeType>trailer</itunes:episodeType>
+    </item>
+  </channel>
+</rss>
