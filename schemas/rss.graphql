@@ -1,12 +1,12 @@
 """
 A date-time string in RFC 2822 format
 """
-scalar DateTime
+scalar RssDateTime
 
 """
 Represents the iTunes owner information.
 """
-type iTunesOwner {
+type RssiTunesOwner {
   name: String
   email: String
 }
@@ -14,7 +14,7 @@ type iTunesOwner {
 """
 Represents an image in the RSS feed.
 """
-type Image {
+type RssImage {
   link: String
   title: String
   url: String
@@ -23,14 +23,14 @@ type Image {
 """
 Represents a category in the RSS feed.
 """
-type Category {
+type RssCategory {
   text: String
 }
 
 """
 Represents an enclosure (usually an audio file) in the RSS feed.
 """
-type Enclosure {
+type RssEnclosure {
   url: String
   length: Int
   type: String
@@ -39,7 +39,7 @@ type Enclosure {
 """
 Represents a media thumbnail.
 """
-type MediaThumbnail {
+type RssMediaThumbnail {
   url: String
   width: Int
   height: Int
@@ -48,7 +48,7 @@ type MediaThumbnail {
 """
 Represents a media restriction.
 """
-type MediaRestriction {
+type RssMediaRestriction {
   type: String
   relationship: String
   countries: String
@@ -58,7 +58,7 @@ type MediaRestriction {
 """
 Represents the GUID (Global Unique Identifier) of an item
 """
-type GuidType {
+type RssGuidType {
   value: String!
   isPermaLink: Boolean
 }
@@ -67,7 +67,7 @@ type GuidType {
 """
 Represents an Atom link element
 """
-type AtomLink {
+type RssAtomLink {
   href: String
   rel: String
   title: String
@@ -77,7 +77,7 @@ type AtomLink {
 """
 Represents a podcast funding element.
 """
-type PodcastFunding {
+type RssPodcastFunding {
   url: String
   text: String
 }
@@ -93,19 +93,19 @@ type RSSSource {
 """
 Represents a podcast episode.
 """
-type Item {
-  guid: GuidType!
+type RssItem {
+  guid: RssGuidType!
   title: String!
   description: String
-  pubDate: DateTime
+  pubDate: RssDateTime
   author: String
   link: String
   content_encoded: String
-  enclosure: Enclosure
+  enclosure: RssEnclosure
   itunes_title: String
   itunes_author: String
   itunes_image: String
-  media_thumbnail: MediaThumbnail
+  media_thumbnail: RssMediaThumbnail
   itunes_duration: String
   itunes_summary: String
   itunes_subtitle: String
@@ -125,16 +125,16 @@ type Item {
 """
 Represents the RSS channel.
 """
-type Channel {
-  atom_link: [AtomLink]
+type RssChannel {
+  atom_link: [RssAtomLink]
   generator: String
   title: String!
   description: String!
   copyright: String
   language: String
-  pubDate: DateTime
-  lastBuildDate: DateTime
-  image: Image
+  pubDate: RssDateTime
+  lastBuildDate: RssDateTime
+  image: RssImage
   link: String!
   itunes_type: String
   itunes_summary: String
@@ -142,12 +142,12 @@ type Channel {
   itunes_explicit: String
   itunes_image: String
   itunes_new_feed_url: String
-  itunes_owner: iTunesOwner
-  itunes_category: [Category]
-  media_thumbnail: MediaThumbnail
-  media_restriction: MediaRestriction
-  podcast_funding: PodcastFunding
-  item: [Item]
+  itunes_owner: RssiTunesOwner
+  itunes_category: [RssCategory]
+  media_thumbnail: RssMediaThumbnail
+  media_restriction: RssMediaRestriction
+  podcast_funding: RssPodcastFunding
+  item: [RssItem]
   itunes_subtitle: String
   content_encoded: String
   sy_updatePeriod: String   
@@ -165,7 +165,7 @@ type Channel {
 Represents the root RSS feed.
 """
 type RSS {
-  channel: Channel
+  channel: RssChannel
 }
 
 type Query {

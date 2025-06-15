@@ -1,10 +1,15 @@
 """
+A date-time string in ISO 8601 format
+"""
+scalar MpoDateTime
+
+"""
 A podcast episode with metadata
 """
 type MpoEpisode {
   name: String!
   description: String
-  published: DateTime
+  published: MpoDateTime
   durationInSeconds: String
   downloadUrl: String
   type: String
@@ -68,11 +73,6 @@ HTTP validation error response
 type MpoHTTPValidationError {
   detail: [MpoValidationError!]
 }
-
-"""
-A date-time string in ISO 8601 format
-"""
-scalar MpoDateTime
 
 type Query {
   """
