@@ -30,12 +30,12 @@ async function generateGraphQLFromOpenAPI(openApiFilePath: string) {
         
         // Generate GraphQL schema
         const outputGraphQLFilePath = `${outputDirectory}/${schemaName}.graphql`;
-        const graphqlSchema = parser.generateGraphQLSchema();
+        const graphqlSchema = parser.generateGraphQLSchema(schemaName);
         await ensureDirectoryExists(outputGraphQLFilePath);
         await fs.writeFile(outputGraphQLFilePath, graphqlSchema);
         
         // Generate DataSource
-        const dataSource = parser.generateDataSource();
+        const dataSource = parser.generateDataSource(schemaName, "/");
         const dataSourcePath = `${outputDirectory}/${schemaName}.ts`;
         await ensureDirectoryExists(dataSourcePath);
         await fs.writeFile(dataSourcePath, dataSource);
@@ -47,7 +47,7 @@ async function generateGraphQLFromOpenAPI(openApiFilePath: string) {
 
 const args = process.argv.slice(2);
 
-if (args.length < 2) {
+if (args.length < 1) {
     console.error('Usage: npm run generate:schema <openApiFile>');
     console.error('Example: npm run generate:schema ./example_open_api/mpo_api_openapi.json');
     process.exit(1);

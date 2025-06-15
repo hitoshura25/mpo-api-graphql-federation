@@ -1,3 +1,5 @@
+import { pascalCase } from 'change-case';
+
 export interface OpenAPISpec {
   openapi: string;
   paths: {
@@ -56,26 +58,26 @@ export interface SchemaObject {
 export class OpenAPIParser {
   constructor(private spec: OpenAPISpec) {}
 
-  generateGraphQLSchema(): string {
+  generateGraphQLSchema(apiName: string): string {
     let schema = '';
-    
+    const namespace = pascalCase(apiName);
     // Generate types from components.schemas
     for (const [typeName, schemaObj] of Object.entries(this.spec.components.schemas)) {
-      schema += this.generateGraphQLType(typeName, schemaObj);
+      schema += this.generateGraphQLType(namespace, typeName, schemaObj);
     }
 
     // Generate Query type from paths
-    schema += this.generateQueryType();
+    schema += this.generateQueryType(namespace);
 
     return schema;
   }
 
-  generateDataSource(): string {
+  generateDataSource(apiName: string, baseUrl: string): string {
     let source = `
 import { RESTDataSource } from '@apollo/datasource-rest';
 
-export class MpoPodcastAPI extends RESTDataSource {
-  override baseURL = process.env.MPO_API_URL || 'http://localhost:8000';
+export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
+  override baseURL = '${baseUrl}';
 
 `;
 
@@ -91,27 +93,27 @@ export class MpoPodcastAPI extends RESTDataSource {
     return source;
   }
 
-  private generateGraphQLType(name: string, schema: SchemaObject): string {
+  private generateGraphQLType(namespace: string, name: string, schema: SchemaObject): string {
     if (!schema.properties) return '';
 
-    let type = `type ${name} {\n`;
+    let type = `type ${namespace}${name} {\n`;
     
     for (const [propName, propSchema] of Object.entries(schema.properties)) {
       const isRequired = schema.required?.includes(propName);
-      type += `  ${propName}: ${this.getGraphQLType(propSchema)}${isRequired ? '!' : ''}\n`;
+      type += `  ${propName}: ${this.getGraphQLType(namespace, propSchema)}${isRequired ? '!' : ''}\n`;
     }
     
     type += '}\n\n';
     return type;
   }
 
-  private getGraphQLType(schema: SchemaObject): string {
+  private getGraphQLType(namespace: string, schema: SchemaObject): string {
     if (schema.$ref) {
-      return schema.$ref.split('/').pop() || 'String';
+      return `${namespace}${schema.$ref.split('/').pop()}` || 'String';
     }
 
     if (schema.type === 'array') {
-      return `[${this.getGraphQLType(schema.items!)}]`;
+      return `[${this.getGraphQLType(namespace, schema.items!)}]`;
     }
 
     switch (schema.type) {
@@ -126,14 +128,14 @@ export class MpoPodcastAPI extends RESTDataSource {
     }
   }
 
-  private generateQueryType(): string {
+  private generateQueryType(namespace: string): string {
     let query = 'type Query {\n';
     
     for (const [path, pathItem] of Object.entries(this.spec.paths)) {
       if (pathItem.get) {
         const operation = pathItem.get;
-        const returnType = this.getReturnType(operation);
-        const params = this.getParameters(operation);
+        const returnType = this.getReturnType(namespace, operation);
+        const params = this.getParameters(namespace, operation);
         
         query += `  ${operation.operationId}${params}: ${returnType}\n`;
       }
@@ -181,19 +183,19 @@ export class MpoPodcastAPI extends RESTDataSource {
     }
   }
 
-  private getReturnType(operation: any): string {
+  private getReturnType(namespace: string, operation: any): string {
     const successResponse = operation.responses['200'];
     if (!successResponse?.content) return 'Boolean';
 
     const schema = successResponse.content['application/json'].schema;
-    return this.getGraphQLType(schema);
+    return this.getGraphQLType(namespace, schema);
   }
 
-  private getParameters(operation: any): string {
+  private getParameters(namespace: string, operation: any): string {
     if (!operation.parameters?.length) return '';
 
     const params = operation.parameters.map((p: any) => 
-      `${p.name}: ${this.getGraphQLType(p.schema)}`
+      `${p.name}: ${this.getGraphQLType(namespace, p.schema)}`
     ).join(', ');
 
     return `(${params})`;
