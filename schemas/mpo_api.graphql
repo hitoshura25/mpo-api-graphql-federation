@@ -1,0 +1,102 @@
+"""
+A date-time string in ISO 8601 format
+"""
+scalar MpoDateTime
+
+"""
+A podcast episode with metadata
+"""
+type MpoEpisode {
+  name: String!
+  description: String
+  published: MpoDateTime
+  durationInSeconds: String
+  downloadUrl: String
+  type: String
+  artworkUrl: String
+}
+
+"""
+Metadata for pagination
+"""
+type MpoPaginationMetadata {
+  total: Int!
+  limit: Int!
+  offset: Int!
+  nextPage: String
+  previousPage: String
+}
+
+"""
+Response containing episodes and pagination info
+"""
+type MpoEpisodeResponse {
+  name: String!
+  description: String
+  imageUrl: String
+  episodes: [MpoEpisode!]!
+  pagination: MpoPaginationMetadata!
+}
+
+"""
+A podcast with metadata
+"""
+type MpoPodcast {
+  name: String
+  artworkUrl: String
+  smallArtworkUrl: String
+  genres: [String]
+  author: String
+  feedUrl: String
+}
+
+"""
+Response containing search results
+"""
+type MpoPodcastResponse {
+  resultCount: Int!
+  results: [MpoPodcast!]!
+}
+
+"""
+Validation error details
+"""
+type MpoValidationError {
+  loc: [String!]!
+  msg: String!
+  type: String!
+}
+
+"""
+HTTP validation error response
+"""
+type MpoHTTPValidationError {
+  detail: [MpoValidationError!]
+}
+
+type Query {
+  """
+  Search for podcasts
+  """
+  mpoSearchPodcasts(
+    """Search term for podcasts"""
+    term: String!
+  ): MpoPodcastResponse!
+
+  """
+  Get details for a specific podcast
+  """
+  mpoGetPodcastDetails(
+    """RSS feed URL of the podcast"""
+    feedUrl: String!
+    """Maximum number of episodes to return"""
+    episodeLimit: Int = 10
+    """Offset position for episodes to return"""
+    episodeOffset: Int = 0
+  ): MpoEpisodeResponse!
+
+  """
+  Health check endpoint
+  """
+  mpoHealth: Boolean!
+}

@@ -1,0 +1,176 @@
+"""
+A date-time string in RFC 2822 format
+"""
+scalar RssDateTime
+
+"""
+Represents the iTunes owner information.
+"""
+type RssiTunesOwner {
+  name: String
+  email: String
+}
+
+"""
+Represents an image in the RSS feed.
+"""
+type RssImage {
+  link: String
+  title: String
+  url: String
+}
+
+"""
+Represents a category in the RSS feed.
+"""
+type RssCategory {
+  text: String
+}
+
+"""
+Represents an enclosure (usually an audio file) in the RSS feed.
+"""
+type RssEnclosure {
+  url: String
+  length: Int
+  type: String
+}
+
+"""
+Represents a media thumbnail.
+"""
+type RssMediaThumbnail {
+  url: String
+  width: Int
+  height: Int
+}
+
+"""
+Represents a media restriction.
+"""
+type RssMediaRestriction {
+  type: String
+  relationship: String
+  countries: String
+}
+
+
+"""
+Represents the GUID (Global Unique Identifier) of an item
+"""
+type RssGuidType {
+  value: String!
+  isPermaLink: Boolean
+}
+
+
+"""
+Represents an Atom link element
+"""
+type RssAtomLink {
+  href: String
+  rel: String
+  title: String
+  type: String
+}
+
+"""
+Represents a podcast funding element.
+"""
+type RssPodcastFunding {
+  url: String
+  text: String
+}
+
+"""
+Represents the source of an RSS item
+"""
+type RSSSource {
+  url: String!
+  title: String
+}
+
+"""
+Represents a podcast episode.
+"""
+type RssItem {
+  guid: RssGuidType!
+  title: String!
+  description: String
+  pubDate: RssDateTime
+  author: String
+  link: String
+  content_encoded: String
+  enclosure: RssEnclosure
+  itunes_title: String
+  itunes_author: String
+  itunes_image: String
+  media_thumbnail: RssMediaThumbnail
+  itunes_duration: String
+  itunes_summary: String
+  itunes_subtitle: String
+  itunes_keywords: String
+  itunes_explicit: String
+  itunes_episodeType: String
+  itunes_episode: Int
+  itunes_block: String 
+  dc_creator: String        
+  googleplay_block: String  
+  googleplay_image: String 
+  comments: String 
+  source: RSSSource
+  category: [String]
+}
+
+"""
+Represents the RSS channel.
+"""
+type RssChannel {
+  atom_link: [RssAtomLink]
+  generator: String
+  title: String!
+  description: String!
+  copyright: String
+  language: String
+  pubDate: RssDateTime
+  lastBuildDate: RssDateTime
+  image: RssImage
+  link: String!
+  itunes_type: String
+  itunes_summary: String
+  itunes_author: String
+  itunes_explicit: String
+  itunes_image: String
+  itunes_new_feed_url: String
+  itunes_owner: RssiTunesOwner
+  itunes_category: [RssCategory]
+  media_thumbnail: RssMediaThumbnail
+  media_restriction: RssMediaRestriction
+  podcast_funding: RssPodcastFunding
+  item: [RssItem]
+  itunes_subtitle: String
+  content_encoded: String
+  sy_updatePeriod: String   
+  sy_updateFrequency: Int 
+  googleplay_image: String
+  itunes_block: String 
+  skipHours: [Int]     
+  skipDays: [String] 
+  docs: String 
+  googleplay_explicit: String @deprecated(reason: "Use itunes_explicit instead")
+  googleplay_block: String @deprecated(reason: "Use itunes_block instead")
+}
+
+"""
+Represents the root RSS feed.
+"""
+type RSS {
+  channel: RssChannel
+}
+
+type Query {
+  """
+  Fetches the RSS feed data.
+  """
+  rss: RSS
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <atom:link href="https://feeds.megaphone.fm/gamescoop" rel="self" type="application/rss+xml"/>
+    <title>Game Scoop!</title>
+    <link>Geek.com</link>
+    <language>en</language>
+    <copyright>2012 405569</copyright>
+    <description>Veteran games industry host Daemon Hatfield and the IGN crew break down the biggest gaming news of the week, dive into retro gaming nostalgia, and challenge each other—and the audience—with trivia that puts even hardcore gamers to the test. Whether you're a longtime fan or a new listener, Game Scoop! is one of the longest-running and most beloved video game podcasts, delivering expert insights, lively debates, and endless gaming fun.
+Game Scoop is a part of Geek Media podcast network, an IGN Entertainment Brand.
+Visit Geek.com for more information.</description>
+    <image>
+      <url>https://megaphone.imgix.net/podcasts/6c7d19b0-729e-11ee-ab31-cb7b4e09a1f7/image/49bfd96ed9d8a8f3d7ee2a344fe303f0.jpg?ixlib=rails-4.3.1&amp;max-w=3000&amp;max-h=3000&amp;fit=crop&amp;auto=format,compress</url>
+      <title>Game Scoop!</title>
+      <link>Geek.com</link>
+    </image>
+    <itunes:explicit>no</itunes:explicit>
+    <itunes:type>episodic</itunes:type>
+    <itunes:subtitle>A week’s worth of gaming news straight into your ear!</itunes:subtitle>
+    <itunes:author>IGN &amp; Geek Media</itunes:author>
+    <itunes:summary>Veteran games industry host Daemon Hatfield and the IGN crew break down the biggest gaming news of the week, dive into retro gaming nostalgia, and challenge each other—and the audience—with trivia that puts even hardcore gamers to the test. Whether you're a longtime fan or a new listener, Game Scoop! is one of the longest-running and most beloved video game podcasts, delivering expert insights, lively debates, and endless gaming fun.
+Game Scoop is a part of Geek Media podcast network, an IGN Entertainment Brand.
+Visit Geek.com for more information.</itunes:summary>
+    <content:encoded>
+      <![CDATA[<p>Veteran games industry host Daemon Hatfield and the IGN crew break down the biggest gaming news of the week, dive into retro gaming nostalgia, and challenge each other—and the audience—with trivia that puts even hardcore gamers to the test. Whether you're a longtime fan or a new listener, Game Scoop! is one of the longest-running and most beloved video game podcasts, delivering expert insights, lively debates, and endless gaming fun.</p><p>Game Scoop is a part of Geek Media podcast network, an IGN Entertainment Brand.</p><p>Visit Geek.com for more information.</p>]]>
+    </content:encoded>
+    <itunes:owner>
+      <itunes:name>IGN</itunes:name>
+      <itunes:email>podcasts@ign.com</itunes:email>
+    </itunes:owner>
+    <itunes:image href="https://megaphone.imgix.net/podcasts/6c7d19b0-729e-11ee-ab31-cb7b4e09a1f7/image/49bfd96ed9d8a8f3d7ee2a344fe303f0.jpg?ixlib=rails-4.3.1&amp;max-w=3000&amp;max-h=3000&amp;fit=crop&amp;auto=format,compress"/>
+    <itunes:category text="Leisure">
+      <itunes:category text="Video Games"/>
+      <itunes:category text="Games"/>
+    </itunes:category>
+    <item>
+      <title>Game Scoop! 814: So Is Mario Kart World Worth $80?</title>
+      <description>Welcome back to IGN Game Scoop!, the ONLY video game podcast! This week your Omega Cops -- Daemon Hatfield, Sam Claiborn, Logan Plant, and Justin Davis -- are discussing Nintendo Switch 2, Mario Kart World, Resident Evil 9, the ROG Xbox Ally, and more. And, of course, they play Video Game 20 Questions.
+Learn more about your ad choices. Visit megaphone.fm/adchoices</description>
+      <pubDate>Fri, 13 Jun 2025 22:00:00 -0000</pubDate>
+      <itunes:title>So Is Mario Kart World Worth $80?</itunes:title>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>814</itunes:episode>
+      <itunes:author>IGN &amp; Geek Media</itunes:author>
+      <itunes:subtitle>Nintendo Switch 2, Mario Kart World, Resident Evil 9, the ROG Xbox Ally, and more.</itunes:subtitle>
+      <itunes:summary>Welcome back to IGN Game Scoop!, the ONLY video game podcast! This week your Omega Cops -- Daemon Hatfield, Sam Claiborn, Logan Plant, and Justin Davis -- are discussing Nintendo Switch 2, Mario Kart World, Resident Evil 9, the ROG Xbox Ally, and more. And, of course, they play Video Game 20 Questions.
+Learn more about your ad choices. Visit megaphone.fm/adchoices</itunes:summary>
+      <content:encoded>
+        <![CDATA[<p>Welcome back to IGN Game Scoop!, the ONLY video game podcast! This week your Omega Cops -- Daemon Hatfield, Sam Claiborn, Logan Plant, and Justin Davis -- are discussing Nintendo Switch 2, Mario Kart World, Resident Evil 9, the ROG Xbox Ally, and more. And, of course, they play Video Game 20 Questions.</p><p> </p><p>Learn more about your ad choices. Visit <a href="https://megaphone.fm/adchoices">megaphone.fm/adchoices</a></p>]]>
+      </content:encoded>
+      <itunes:duration>4807</itunes:duration>
+      <guid isPermaLink="false"><![CDATA[a50527b6-4897-11f0-b97c-03f36abd1117]]></guid>
+      <enclosure url="https://www.podtrac.com/pts/redirect.mp3/pdst.fm/e/mgln.ai/e/495/chrt.fm/track/FGADCC/pscrb.fm/rss/p/tracking.swap.fm/track/bwUd3PHC9DH3VTlBXDTt/traffic.megaphone.fm/SBP6189256510.mp3?updated=1749852619" length="0" type="audio/mpeg"/>
+    </item>
+  </channel>
+</rss>

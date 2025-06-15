@@ -1,0 +1,58 @@
+"""
+Represents a podcast in the iTunes store
+"""
+type iTunesPodcast {
+  wrapperType: String
+  kind: String
+  artistId: Int
+  collectionId: Int
+  trackId: Int
+  artistName: String
+  collectionName: String
+  trackName: String
+  collectionCensoredName: String
+  trackCensoredName: String
+  artistViewUrl: String
+  collectionViewUrl: String
+  feedUrl: String
+  trackViewUrl: String
+  artworkUrl30: String
+  artworkUrl60: String
+  artworkUrl100: String
+  artworkUrl600: String
+  collectionPrice: Float
+  trackPrice: Float
+  collectionHdPrice: Float
+  releaseDate: String
+  collectionExplicitness: String
+  trackExplicitness: String
+  trackCount: Int
+  trackTimeMillis: Int
+  country: String
+  currency: String
+  primaryGenreName: String
+  contentAdvisoryRating: String
+  genreIds: [String]
+  genres: [String]
+}
+
+"""
+Response from iTunes search API
+"""
+type iTunesSearchResponse {
+  resultCount: Int
+  results: [iTunesPodcast]
+}
+
+type Query {
+  """
+  Search for podcasts in iTunes
+  Parameters:
+  - term: Search term to find podcasts
+  - entity: Type of media to search for (defaults to "podcast")
+  """
+  searchiTunesPodcasts(
+    term: String!
+    entity: String = "podcast"
+  ): iTunesSearchResponse
+}
