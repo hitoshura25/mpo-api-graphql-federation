@@ -58,16 +58,31 @@ export interface SchemaObject {
 export class OpenAPIParser {
   constructor(private spec: OpenAPISpec) {}
 
-  generateGraphQLSchema(apiName: string): string {
-    let schema = '';
+  generateGraphQLSchema(apiName: string, baseURL: string): string {
     const namespace = pascalCase(apiName);
+
+    // Add federation directives and schema extensions
+    let schema = `extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.11", import: ["@key"])
+  @link(
+    url: "https://specs.apollo.dev/connect/v0.2"
+    import: ["@source", "@connect"]
+  )
+  @source(
+    name: "${apiName}"
+    http: { baseURL: "${baseURL}" }
+  )
+
+`;
+
     // Generate types from components.schemas
-    for (const [typeName, schemaObj] of Object.entries(this.spec.components.schemas)) {
+    const componentSchemas = Object.entries(this.spec.components.schemas)
+    for (const [typeName, schemaObj] of componentSchemas) {
       schema += this.generateGraphQLType(namespace, typeName, schemaObj);
     }
 
     // Generate Query type from paths
-    schema += this.generateQueryType(namespace);
+    schema += this.generateQueryType(namespace, apiName, componentSchemas);
 
     return schema;
   }
@@ -128,7 +143,7 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
     }
   }
 
-  private generateQueryType(namespace: string): string {
+  private generateQueryType(namespace: string, sourceName: string, componentSchemas: [string, SchemaObject][]): string {
     let query = 'type Query {\n';
     
     for (const [path, pathItem] of Object.entries(this.spec.paths)) {
@@ -136,13 +151,58 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
         const operation = pathItem.get;
         const returnType = this.getReturnType(namespace, operation);
         const params = this.getParameters(namespace, operation);
-        
-        query += `  ${operation.operationId}${params}: ${returnType}\n`;
+        const selection = this.generateSelectionSet(operation, componentSchemas);
+
+        query += `  ${operation.operationId}${params}: ${returnType}
+    @connect(
+      source: "${sourceName}"
+      http: { GET: "${path}" }  
+      selection: """
+      ${selection}
+      """
+    )\n`;      
       }
     }
     
     query += '}\n';
     return query;
+  }
+
+  private generateSelectionSet(operation: Operation, componentSchemas: [string, SchemaObject][]): string {
+    // Extract fields from response schema
+    const successResponse = operation.responses['200'] as Response;
+    if (!successResponse?.content?.['application/json']?.schema) {
+      return 'id';
+    }
+
+    const schema = successResponse.content['application/json'].schema as SchemaObject;
+    return this.extractFields(schema, componentSchemas).join('\n');
+  }
+
+  private extractFields(schema: SchemaObject, componentSchemas: [string, SchemaObject][]): string[] {
+    const fields: string[] = [];
+    let currentSchema = schema;
+    if (schema.$ref) {
+      const refName = schema.$ref.split('/').pop();
+      const componentSchema = componentSchemas.find(([name]) => name === refName);
+      if (componentSchema && componentSchema[1]) {
+        currentSchema = componentSchema[1];
+      }
+    }
+
+    if (currentSchema.properties) {
+      for (const [fieldName, fieldSchema] of Object.entries(currentSchema.properties)) {
+        fields.push(fieldName);
+        
+        // Handle nested objects
+        if (fieldSchema.type === 'object' && fieldSchema.properties) {
+          const nestedFields = this.extractFields(fieldSchema, componentSchemas);
+          fields.push(...nestedFields.map(f => `${fieldName} { ${f} }`));
+        }
+      }
+    }
+
+    return fields;
   }
 
   private generateDataSourceMethod(path: string, method: string, operation: any): string {
