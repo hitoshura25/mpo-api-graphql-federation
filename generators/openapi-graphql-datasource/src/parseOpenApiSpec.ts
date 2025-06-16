@@ -157,9 +157,9 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
     @connect(
       source: "${sourceName}"
       http: { GET: "${path}" }  
-      selection: """
+      ${selection ? `selection: """
       ${selection}
-      """
+      """` : ''}
     )\n`;      
       }
     }
@@ -192,12 +192,26 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
 
     if (currentSchema.properties) {
       for (const [fieldName, fieldSchema] of Object.entries(currentSchema.properties)) {
-        fields.push(fieldName);
         
         // Handle nested objects
         if (fieldSchema.type === 'object' && fieldSchema.properties) {
+          fields.push(fieldName);
           const nestedFields = this.extractFields(fieldSchema, componentSchemas);
           fields.push(...nestedFields.map(f => `${fieldName} { ${f} }`));
+        } else if (fieldSchema.type === 'array' && fieldSchema.items) {
+          const arrayItemFields = this.extractFields(fieldSchema.items, componentSchemas);
+          const arrayItemFieldsSelect = arrayItemFields.length > 0 ? arrayItemFields.join('\n') : ''
+          fields.push(`${fieldName} {\n${arrayItemFieldsSelect}\n}`);
+        } else if (fieldSchema.$ref) {
+            const refName = fieldSchema.$ref.split('/').pop();
+            const componentSchema = componentSchemas.find(([name]) => name === refName);
+            if (componentSchema && componentSchema[1]) {
+                const refItemFields = this.extractFields(componentSchema[1], componentSchemas);
+                const refItemFieldsSelect = refItemFields.length > 0 ? refItemFields.join('\n') : ''
+                fields.push(`${fieldName} {\n${refItemFieldsSelect}\n}`);
+            }
+        } else {
+          fields.push(fieldName);
         }
       }
     }
