@@ -149,17 +149,22 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
     for (const [path, pathItem] of Object.entries(this.spec.paths)) {
       if (pathItem.get) {
         const operation = pathItem.get;
+        const selection = this.generateSelectionSet(operation, componentSchemas);
+        if (!selection) {
+            console.warn(`Skipping operation ${operation.operationId} due to no selection.`);
+            continue
+        }
+
         const returnType = this.getReturnType(namespace, operation);
         const params = this.getParameters(namespace, operation);
-        const selection = this.generateSelectionSet(operation, componentSchemas);
 
         query += `  ${operation.operationId}${params}: ${returnType}
     @connect(
       source: "${sourceName}"
       http: { GET: "${path}" }  
-      ${selection ? `selection: """
+      selection: """
       ${selection}
-      """` : ''}
+      """
     )\n`;      
       }
     }
