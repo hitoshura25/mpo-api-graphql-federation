@@ -1,4 +1,5 @@
 import { pascalCase } from 'change-case';
+import * as fs from 'fs';
 
 export interface OpenAPISpec {
   openapi: string;
@@ -9,6 +10,10 @@ export interface OpenAPISpec {
     schemas: {
       [name: string]: SchemaObject;
     };
+  };
+  info: {
+    title: string;
+    version: string;
   };
 }
 
@@ -53,6 +58,7 @@ export interface SchemaObject {
   required?: string[];
   $ref?: string;
   anyOf?: SchemaObject[];
+  format?: string;
 }
 
 export class OpenAPIParser {
@@ -177,6 +183,35 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
     return query;
   }
 
+  private getResponseOrOverride(operation: Operation, responseCode: string): Response {
+    const response = operation.responses[responseCode];
+    const responseFile = `./schema_override_responses/${operation.operationId}_${responseCode}.json`;
+
+    if (fs.existsSync(responseFile)) {
+      try {
+        const responseContent = fs.readFileSync(responseFile, 'utf-8');
+        const responseJson = JSON.parse(responseContent);
+
+        // Infer schema from JSON response
+        const schema = this.inferSchema(responseJson);
+
+        return {
+          description: `Response from ${responseFile}`,
+          content: {
+            'application/json': {
+              schema: schema,
+            },
+          },
+        };
+      } catch (error) {
+        console.error(`Error reading or parsing response file ${responseFile}:`, error);
+        return response
+      }
+    }
+
+    return response
+  }
+
   private generateSelectionSet(operation: Operation, componentSchemas: [string, SchemaObject][]): string {
     let allFields: string[] = [];
 
@@ -184,7 +219,7 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
      if (responseCode !== '200') {
         continue; // TODO: Figure out errors
      }
-      const response = operation.responses[responseCode] as Response;
+      const response = this.getResponseOrOverride(operation, responseCode);
       if (response?.content?.['application/json']?.schema) {
         const schema = response.content['application/json'].schema as SchemaObject;
         const fields = this.extractFields(schema, componentSchemas);
@@ -279,7 +314,7 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
   }
 
   private getReturnType(namespace: string, operation: any): string {
-    const successResponse = operation.responses['200'];
+    const successResponse = this.getResponseOrOverride(operation, '200');
     if (!successResponse?.content) return 'Boolean';
 
     const schema = successResponse.content['application/json'].schema;
@@ -305,4 +340,55 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
 
     return params;
   }
+
+  private createOpenAPISchemaFromJSON(json: any, title: string): OpenAPISpec {
+        const schema = this.inferSchema(json);
+
+        const openAPISpec: OpenAPISpec = {
+            openapi: "3.0.0",
+            info: {
+                title: title,
+                version: "1.0.0",
+            },
+            paths: {},
+            components: {
+                schemas: {
+                    [title]: schema,
+                },
+            },
+        };
+
+        return openAPISpec;
+    }
+
+    private inferSchema(json: any): SchemaObject {
+        if (typeof json === "string") {
+            return { type: "string" };
+        } else if (typeof json === "number") {
+            if (Number.isInteger(json)) {
+                return { type: "integer", format: "int32" };
+            } else {
+                return { type: "number", format: "float" };
+            }
+        } else if (typeof json === "boolean") {
+            return { type: "boolean" };
+        } else if (Array.isArray(json)) {
+            if (json.length > 0) {
+                const itemSchema = this.inferSchema(json[0]);
+                return { type: "array", items: itemSchema };
+            } else {
+                return { type: "array", items: {} }; // Empty array
+            }
+        } else if (typeof json === "object" && json !== null) {
+            const properties: { [name: string]: SchemaObject } = {};
+            for (const key in json) {
+                if (json.hasOwnProperty(key)) {
+                    properties[key] = this.inferSchema(json[key]);
+                }
+            }
+            return { type: "object", properties: properties };
+        } else {
+            return { type: "string" }; // Default
+        }
+    }
 }
