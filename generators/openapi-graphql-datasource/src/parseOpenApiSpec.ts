@@ -174,14 +174,25 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
   }
 
   private generateSelectionSet(operation: Operation, componentSchemas: [string, SchemaObject][]): string {
-    // Extract fields from response schema
-    const successResponse = operation.responses['200'] as Response;
-    if (!successResponse?.content?.['application/json']?.schema) {
+    let allFields: string[] = [];
+
+    for (const responseCode in operation.responses) {
+     if (responseCode !== '200') {
+        continue; // TODO: Figure out errors
+     }
+      const response = operation.responses[responseCode] as Response;
+      if (response?.content?.['application/json']?.schema) {
+        const schema = response.content['application/json'].schema as SchemaObject;
+        const fields = this.extractFields(schema, componentSchemas);
+        allFields = allFields.concat(fields);
+      }
+    }
+
+    if (allFields.length === 0) {
       return 'id';
     }
 
-    const schema = successResponse.content['application/json'].schema as SchemaObject;
-    return this.extractFields(schema, componentSchemas).join('\n');
+    return [...new Set(allFields)].join('\n'); // Deduplicate fields
   }
 
   private extractFields(schema: SchemaObject, componentSchemas: [string, SchemaObject][]): string[] {
