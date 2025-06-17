@@ -58,6 +58,8 @@ export interface SchemaObject {
 export class OpenAPIParser {
   constructor(private spec: OpenAPISpec) {}
 
+  private schemasPresentInQueries: { [name: string]: Boolean } = {};
+
   generateGraphQLSchema(apiName: string, baseURL: string): string {
     const namespace = pascalCase(apiName);
 
@@ -75,14 +77,16 @@ export class OpenAPIParser {
 
 `;
 
-    // Generate types from components.schemas
     const componentSchemas = Object.entries(this.spec.components.schemas)
-    for (const [typeName, schemaObj] of componentSchemas) {
-      schema += this.generateGraphQLType(namespace, typeName, schemaObj);
-    }
 
     // Generate Query type from paths
     schema += this.generateQueryType(namespace, apiName, componentSchemas);
+
+    // Generate types from components.schemas
+    for (const [typeName, schemaObj] of componentSchemas) {
+        if (!this.schemasPresentInQueries[typeName]) continue
+        schema += this.generateGraphQLType(namespace, typeName, schemaObj);
+    }
 
     return schema;
   }
@@ -203,12 +207,12 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
       const componentSchema = componentSchemas.find(([name]) => name === refName);
       if (componentSchema && componentSchema[1]) {
         currentSchema = componentSchema[1];
+        this.schemasPresentInQueries[componentSchema[0]] = true;
       }
     }
 
     if (currentSchema.properties) {
-      for (const [fieldName, fieldSchema] of Object.entries(currentSchema.properties)) {
-        
+      for (const [fieldName, fieldSchema] of Object.entries(currentSchema.properties)) { 
         // Handle nested objects
         if (fieldSchema.type === 'object' && fieldSchema.properties) {
           fields.push(fieldName);
@@ -225,6 +229,7 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
                 const refItemFields = this.extractFields(componentSchema[1], componentSchemas);
                 const refItemFieldsSelect = refItemFields.length > 0 ? refItemFields.join('\n') : ''
                 fields.push(`${fieldName} {\n${refItemFieldsSelect}\n}`);
+                this.schemasPresentInQueries[componentSchema[0]] = true;
             }
         } else {
           fields.push(fieldName);
