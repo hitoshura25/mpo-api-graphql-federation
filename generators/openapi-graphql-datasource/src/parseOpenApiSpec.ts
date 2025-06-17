@@ -165,7 +165,7 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
         query += `  ${operation.operationId}${params}: ${returnType}
     @connect(
       source: "${sourceName}"
-      http: { GET: "${path}" }  
+      http: { GET: "${path}?${this.getConnectParams(operation)}" }  
       selection: """
       ${selection}
       """
@@ -294,5 +294,15 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
     ).join(', ');
 
     return `(${params})`;
+  }
+
+  private getConnectParams(operation: any): string {
+    if (!operation.parameters?.length) return '';
+
+    const params = operation.parameters.map((p: any) =>
+      `${p.name}=$${p.name}` // Use $args to reference GraphQL arguments
+    ).join('&');
+
+    return params;
   }
 }
