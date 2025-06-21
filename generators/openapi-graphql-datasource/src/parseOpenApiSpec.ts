@@ -64,7 +64,7 @@ export interface SchemaObject {
 export class OpenAPIParser {
   constructor(private spec: OpenAPISpec) {}
 
-  private schemasPresentInQueries: { [name: string]: Boolean } = {};
+  private schemasPresentInQueries: { [name: string]: boolean } = {};
 
   generateGraphQLSchema(apiName: string, baseURL: string): string {
     const namespace = pascalCase(apiName);
@@ -171,11 +171,12 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
 
         const returnType = this.getReturnType(namespace, operation);
         const params = this.getParameters(namespace, operation);
+        const connectParams = this.getConnectParams(operation);
 
         query += `  ${operation.operationId}${params}: ${returnType}
     @connect(
       source: "${sourceName}"
-      http: { GET: "${path}?${this.getConnectParams(operation)}" }  
+      http: { GET: "${path}${connectParams ? `?${connectParams}` : ''}" }  
       selection: ${selection}
     )\n`;      
       }
