@@ -176,9 +176,7 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
     @connect(
       source: "${sourceName}"
       http: { GET: "${path}?${this.getConnectParams(operation)}" }  
-      selection: """
-      ${selection}
-      """
+      selection: ${selection}
     )\n`;      
       }
     }
@@ -218,7 +216,7 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
 
   private generateSelectionSet(operation: Operation, componentSchemas: [string, SchemaObject][]): string {
     let allFields: string[] = [];
-
+    const indentation = '      '; // 6 spaces for GraphQL selection set indentation
     for (const responseCode in operation.responses) {
      if (responseCode !== '200') {
         continue; // Errors should not be included in the selection set
@@ -226,19 +224,20 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
       const response = this.getResponseOrOverride(operation, responseCode);
       if (response?.content?.['application/json']?.schema) {
         const schema = response.content['application/json'].schema as SchemaObject;
-        const fields = this.extractFields(schema, componentSchemas);
+        const fields = this.extractFields(schema, componentSchemas, indentation);
         allFields = allFields.concat(fields);
       }
     }
 
     if (allFields.length === 0) {
-      return 'id';
+      allFields = [`${indentation}id`];
     }
 
-    return [...new Set(allFields)].join('\n'); // Deduplicate fields
+    const selectionSet = [...new Set(allFields)].join(`\n`)
+    return `"""\n${selectionSet}\n${indentation}"""`;
   }
 
-  private extractFields(schema: SchemaObject, componentSchemas: [string, SchemaObject][]): string[] {
+  private extractFields(schema: SchemaObject, componentSchemas: [string, SchemaObject][], indentation: string): string[] {
     const fields: string[] = [];
     let currentSchema = schema;
     if (schema.$ref) {
@@ -254,24 +253,24 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
       for (const [fieldName, fieldSchema] of Object.entries(currentSchema.properties)) { 
         // Handle nested objects
         if (fieldSchema.type === 'object' && fieldSchema.properties) {
-          fields.push(fieldName);
-          const nestedFields = this.extractFields(fieldSchema, componentSchemas);
-          fields.push(...nestedFields.map(f => `${fieldName} { ${f} }`));
+          const nestedFields = this.extractFields(fieldSchema, componentSchemas, indentation);
+          const nestedFieldsSelect = nestedFields.length > 0 ? nestedFields.join(`\n`) : ''
+          fields.push(`${indentation}${fieldName} {\n${nestedFieldsSelect}\n}`);
         } else if (fieldSchema.type === 'array' && fieldSchema.items) {
-          const arrayItemFields = this.extractFields(fieldSchema.items, componentSchemas);
-          const arrayItemFieldsSelect = arrayItemFields.length > 0 ? arrayItemFields.join('\n') : ''
-          fields.push(`${fieldName} {\n${arrayItemFieldsSelect}\n}`);
+          const arrayItemFields = this.extractFields(fieldSchema.items, componentSchemas, `${indentation}  `);
+          const arrayItemFieldsSelect = arrayItemFields.length > 0 ? arrayItemFields.join(`\n`) : ''
+          fields.push(`${indentation}${fieldName} {\n${arrayItemFieldsSelect}\n${indentation}}`);
         } else if (fieldSchema.$ref) {
             const refName = fieldSchema.$ref.split('/').pop();
             const componentSchema = componentSchemas.find(([name]) => name === refName);
             if (componentSchema && componentSchema[1]) {
-                const refItemFields = this.extractFields(componentSchema[1], componentSchemas);
-                const refItemFieldsSelect = refItemFields.length > 0 ? refItemFields.join('\n') : ''
-                fields.push(`${fieldName} {\n${refItemFieldsSelect}\n}`);
+                const refItemFields = this.extractFields(componentSchema[1], componentSchemas, `${indentation}  `);
+                const refItemFieldsSelect = refItemFields.length > 0 ? refItemFields.join(`\n`) : ''
+                fields.push(`${indentation}${fieldName} {\n${refItemFieldsSelect}\n${indentation}}`);
                 this.schemasPresentInQueries[componentSchema[0]] = true;
             }
         } else {
-          fields.push(fieldName);
+          fields.push(`${indentation}${fieldName}`);
         }
       }
     }
