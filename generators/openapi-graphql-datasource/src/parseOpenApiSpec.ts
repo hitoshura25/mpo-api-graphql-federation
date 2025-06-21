@@ -141,6 +141,10 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
       return `[${this.getGraphQLType(namespace, schema.items!)}]`;
     }
 
+    if (schema.anyOf) {
+      return schema.anyOf.filter((s) => s.type !== 'null' ).map((s) => this.getGraphQLType(namespace, s)).join(' | ');
+    }
+
     switch (schema.type) {
       case 'integer':
         return 'Int';
