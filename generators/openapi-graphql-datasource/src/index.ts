@@ -17,7 +17,7 @@ async function clearDirectory(directory: string) {
     }
 }
 
-async function generateGraphQLFromOpenAPI(openApiFilePath: string) {
+async function generateGraphQLFromOpenAPI(openApiFilePath: string, baseURL: string) {
     try {
         const outputDirectory = './generated';
         await clearDirectory(outputDirectory);
@@ -30,7 +30,7 @@ async function generateGraphQLFromOpenAPI(openApiFilePath: string) {
         
         // Generate GraphQL schema
         const outputGraphQLFilePath = `${outputDirectory}/${schemaName}.graphql`;
-        const graphqlSchema = parser.generateGraphQLSchema(schemaName);
+        const graphqlSchema = parser.generateGraphQLSchema(schemaName, baseURL);
         await ensureDirectoryExists(outputGraphQLFilePath);
         await fs.writeFile(outputGraphQLFilePath, graphqlSchema);
         
@@ -54,4 +54,4 @@ if (args.length < 1) {
 }
 
 const [openApiFilePath] = args;
-generateGraphQLFromOpenAPI(openApiFilePath);
+generateGraphQLFromOpenAPI(openApiFilePath, 'http://localhost:8000');

@@ -1,0 +1,6 @@
+subgraphs:
+  mpo:
+    routing_url: http://ignore
+    schema:
+      file: ../generators/openapi-graphql-datasource/generated/mpo_api.graphql
+federation_version: =2.11.0
