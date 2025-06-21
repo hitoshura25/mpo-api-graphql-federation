@@ -335,7 +335,7 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
     if (!operation.parameters?.length) return '';
 
     const params = operation.parameters.map((p: any) =>
-      `${p.name}=$${p.name}` // Use $args to reference GraphQL arguments
+      `${p.name}=\{$args.${p.name}\}` // Use $args to reference GraphQL arguments
     ).join('&');
 
     return params;
