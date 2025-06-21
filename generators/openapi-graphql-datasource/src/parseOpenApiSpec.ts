@@ -221,7 +221,7 @@ export class ${pascalCase(apiName)}DataSource extends RESTDataSource {
 
     for (const responseCode in operation.responses) {
      if (responseCode !== '200') {
-        continue; // TODO: Figure out errors
+        continue; // Errors should not be included in the selection set
      }
       const response = this.getResponseOrOverride(operation, responseCode);
       if (response?.content?.['application/json']?.schema) {
